@@ -49,7 +49,7 @@ function initialize(a) {
 	$('#clickToExit').bind('click', toggleDevTools);
 	window.settings;
 	if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        $('.rrssb-email').remove();
+        
 		settings = {
 			os: "other",
 			platform: "mobile",
@@ -290,3 +290,20 @@ function handleClickBefore(e) {
 		return;
 	}
 }
+
+
+/* register the service worker */
+
+if ('serviceWorker' in navigator) {  
+
+	navigator.serviceWorker.register('/sw.js').then(function (registration) {    // Registration was successful
+		   
+		console.log('ServiceWorker registration successful with scope: ', registration.scope);  
+
+	}).catch(function (err) {    // registration failed :(
+		   
+		console.log('ServiceWorker registration failed: ', err);  
+	});
+
+}
+

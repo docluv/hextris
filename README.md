@@ -3,27 +3,27 @@ Hextris
 
 <img src="images/twitter-opengraph.png" width="100px"><br>
 
-An addictive puzzle game inspired by Tetris. Play it at [www.hextris.io](http://www.hextris.io).
+An addictive puzzle game inspired by Tetris. Play it at [hextris.love2dev.com](hextris.love2dev.com).
 
-By:
+Updated PWA Code By:
+- Chris Love ([@ChrisLove](https://love2dev.com/))
+
+Original Code By:
  - Logan Engstrom ([@lengstrom](http://loganengstrom.com/))
  - Garrett Finucane ([@garrettdreyfus](http://github.com/garrettdreyfus))
  - Noah Moroze ([@nmoroze](http://github.com/nmoroze))
  - Michael Yang ([@themichaelyang](http://github.com/themichaelyang))
-
-# Contributions
-Please submit pull requests to the branch `clay-improvements`.
 
 # About
 Hextris was created by a couple high school friends (who are now in college!) who unfortunately don't have as much time to update the game. If you'd like to support the open-source development of Hextris, please consider donating at:
 
 **ETH:** `0xbf5414129552D37B4Fb12D058Cf1596B960d25b2`
 
-Disclosure: Please note that the version on hextris.io uses [Monero](http://coinhive.com) to support the developers. If you'd rather not play that version, an unmonetized version is available to play at: https://hextris.github.io/hextris.
+The code was forked and updated to a Progressive Web App by Chris Love. The purpose to show how easy it is to make a progressive web app and of course to have some fun!
 
-## Press kit
+##Read More
 
-http://hextris.github.io/presskit/info.html
+Read the PWA [Hextris Blog Announcement](https://love2dev.com/blog/pwa-hextris/) to learn more about making Progressive Web Apps.
 
 ## License
 Copyright (C) 2018 Logan Engstrom
