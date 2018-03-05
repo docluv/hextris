@@ -15,15 +15,21 @@ Original Code By:
  - Michael Yang ([@themichaelyang](http://github.com/themichaelyang))
 
 # About
-Hextris was created by a couple high school friends (who are now in college!) who unfortunately don't have as much time to update the game. If you'd like to support the open-source development of Hextris, please consider donating at:
+Hextris was originally created by a couple high school friends (who are now in college!) who unfortunately don't have as much time to update the game. If you'd like to support the open-source development of Hextris, please consider donating at:
 
 **ETH:** `0xbf5414129552D37B4Fb12D058Cf1596B960d25b2`
 
-The code was forked and updated to a Progressive Web App by Chris Love. The purpose to show how easy it is to make a progressive web app and of course to have some fun!
+The code was forked and updated to a Progressive Web App by [Chris Love](https://twitter.com/chrislove/). The purpose to show how easy it is to make a progressive web app and of course to have some fun!
 
 ##Read More
 
 Read the PWA [Hextris Blog Announcement](https://love2dev.com/blog/pwa-hextris/) to learn more about making Progressive Web Apps.
+
+##Progressive Web Apps
+
+If you want to know more about progressive web apps visit my [long article](https://love2dev.com/blog/what-is-a-pwa/).
+
+If you want Progressive Web Applicatition training sign up for my [PWA course](http://pwacourse.com).
 
 ## License
 Copyright (C) 2018 Logan Engstrom
