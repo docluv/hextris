@@ -32,7 +32,7 @@ If you want to know more about progressive web apps visit my [long article](http
 If you want Progressive Web Applicatition training sign up for my [PWA course](http://pwacourse.com).
 
 ## License
-Copyright (C) 2018 Logan Engstrom
+Copyright (C) 2018 Chris Love
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
