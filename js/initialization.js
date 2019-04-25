@@ -1,11 +1,16 @@
-$(document).ready(function() {
+$( document ).ready( function () {
 	initialize();
-});
-function initialize(a) {
+} );
+
+function initialize( a ) {
+
+	var $startBtn = $( '#startBtn' ),
+		$window = $( window );
+
 	window.rush = 1;
 	window.lastTime = Date.now();
 	window.iframHasLoaded = false;
-	window.colors = ["#e74c3c", "#f1c40f", "#3498db", "#2ecc71"];
+	window.colors = [ "#e74c3c", "#f1c40f", "#3498db", "#2ecc71" ];
 	window.hexColorsToTintedColors = {
 		"#e74c3c": "rgb(241,163,155)",
 		"#f1c40f": "rgb(246,223,133)",
@@ -35,21 +40,21 @@ function initialize(a) {
 	window.textOpacity = 0;
 	window.prevGameState = undefined;
 	window.op = 0;
-	window.saveState = localStorage.getItem("saveState") || "{}";
-	if (saveState !== "{}") {
+	window.saveState = localStorage.getItem( "saveState" ) || "{}";
+	if ( saveState !== "{}" ) {
 		op = 1;
 	}
 
 	window.textShown = false;
-	window.requestAnimFrame = (function() {
-		return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) {
-			window.setTimeout(callback, 1000 / framerate);
+	window.requestAnimFrame = ( function () {
+		return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function ( callback ) {
+			window.setTimeout( callback, 1000 / framerate );
 		};
-	})();
-	$('#clickToExit').bind('click', toggleDevTools);
+	} )();
+	$( '#clickToExit' ).bind( 'click', toggleDevTools );
 	window.settings;
-	if (/Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        
+	if ( /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent ) ) {
+
 		settings = {
 			os: "other",
 			platform: "mobile",
@@ -89,16 +94,16 @@ function initialize(a) {
 		};
 
 	}
-	if(/Android/i.test(navigator.userAgent)) {
+	if ( /Android/i.test( navigator.userAgent ) ) {
 		settings.os = "android";
 	}
 
-	if(navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i)){
-		settings.os="ios";
+	if ( navigator.userAgent.match( /iPhone/i ) || navigator.userAgent.match( /iPad/i ) || navigator.userAgent.match( /iPod/i ) ) {
+		settings.os = "ios";
 	}
 
-	window.canvas = document.getElementById('canvas');
-	window.ctx = canvas.getContext('2d');
+	window.canvas = document.getElementById( 'canvas' );
+	window.ctx = canvas.getContext( '2d' );
 	window.trueCanvas = {
 		width: canvas.width,
 		height: canvas.height
@@ -113,10 +118,10 @@ function initialize(a) {
 	window.numHighScores = 3;
 
 	highscores = [];
-	if (localStorage.getItem('highscores')) {
+	if ( localStorage.getItem( 'highscores' ) ) {
 		try {
-			highscores = JSON.parse(localStorage.getItem('highscores'));
-		} catch (e) {
+			highscores = JSON.parse( localStorage.getItem( 'highscores' ) );
+		} catch ( e ) {
 			highscores = [];
 		}
 	}
@@ -134,158 +139,143 @@ function initialize(a) {
 	window.startTime = undefined;
 	window.gameState;
 	setStartScreen();
-	if (a != 1) {
+	if ( a != 1 ) {
 		window.canRestart = 1;
-		window.onblur = function(e) {
-			if (gameState == 1) {
+		window.onblur = function ( e ) {
+			if ( gameState == 1 ) {
 				pause();
 			}
 		};
-		$('#startBtn').off();
-		if (settings.platform == 'mobile') {
-			$('#startBtn').on('touchstart', startBtnHandler);
+		$startBtn.off();
+		if ( settings.platform == 'mobile' ) {
+			$startBtn.on( 'touchstart', startBtnHandler );
 		} else {
-			$('#startBtn').on('mousedown', startBtnHandler);
+			$startBtn.on( 'mousedown', startBtnHandler );
 		}
 
-		document.addEventListener('touchmove', function(e) {
-			e.preventDefault();
-		}, false);
-		$(window).resize(scaleCanvas);
-		$(window).unload(function() {
+		$window.resize( scaleCanvas );
+		$window.unload( function () {
 
-			if (gameState == 1 || gameState == -1 || gameState === 0) localStorage.setItem("saveState", exportSaveState());
-			else localStorage.setItem("saveState", "{}");
-		});
+			if ( gameState == 1 || gameState == -1 || gameState === 0 ) localStorage.setItem( "saveState", exportSaveState() );
+			else localStorage.setItem( "saveState", "{}" );
+		} );
 
 		addKeyListeners();
-		(function(i, s, o, g, r, a, m) {
-			i['GoogleAnalyticsObject'] = r;
-			i[r] = i[r] || function() {
-				(i[r].q = i[r].q || []).push(arguments)
-			}, i[r].l = 1 * new Date();
-			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
-			a.async = 1;
-			a.src = g;
-			m.parentNode.insertBefore(a, m)
-		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-		ga('create', 'UA-51272720-1', 'teamsnowman.github.io');
-		ga('send', 'pageview');
 
-		document.addEventListener("pause", handlePause, false);
-		document.addEventListener("backbutton", handlePause, false);
-		document.addEventListener("menubutton", handlePause, false); //menu button on android
+		document.addEventListener( "pause", handlePause, false );
+		document.addEventListener( "backbutton", handlePause, false );
+		document.addEventListener( "menubutton", handlePause, false ); //menu button on android
 
-		setTimeout(function() {
-			if (settings.platform == "mobile") {
+		setTimeout( function () {
+			if ( settings.platform == "mobile" ) {
 				try {
-					document.body.removeEventListener('touchstart', handleTapBefore, false);
-				} catch (e) {
+					document.body.removeEventListener( 'touchstart', handleTapBefore, false );
+				} catch ( e ) {
 
 				}
 
 				try {
-					document.body.removeEventListener('touchstart', handleTap, false);
-				} catch (e) {
+					document.body.removeEventListener( 'touchstart', handleTap, false );
+				} catch ( e ) {
 
 				}
 
-				document.body.addEventListener('touchstart', handleTapBefore, false);
+				document.body.addEventListener( 'touchstart', handleTapBefore, false );
 			} else {
 				try {
-					document.body.removeEventListener('mousedown', handleClickBefore, false);
-				} catch (e) {
+					document.body.removeEventListener( 'mousedown', handleClickBefore, false );
+				} catch ( e ) {
 
 				}
 
 				try {
-					document.body.removeEventListener('mousedown', handleClick, false);
-				} catch (e) {
+					document.body.removeEventListener( 'mousedown', handleClick, false );
+				} catch ( e ) {
 
 				}
 
-				document.body.addEventListener('mousedown', handleClickBefore, false);
+				document.body.addEventListener( 'mousedown', handleClickBefore, false );
 			}
-		}, 1);
+		}, 1 );
 	}
 }
 
 function startBtnHandler() {
-	setTimeout(function() {
-		if (settings.platform == "mobile") {
+	setTimeout( function () {
+		if ( settings.platform == "mobile" ) {
 			try {
-				document.body.removeEventListener('touchstart', handleTapBefore, false);
-			} catch (e) {
+				document.body.removeEventListener( 'touchstart', handleTapBefore, false );
+			} catch ( e ) {
 
 			}
 
 			try {
-				document.body.removeEventListener('touchstart', handleTap, false);
-			} catch (e) {
+				document.body.removeEventListener( 'touchstart', handleTap, false );
+			} catch ( e ) {
 
 			}
 
-			document.body.addEventListener('touchstart', handleTap, false);
+			document.body.addEventListener( 'touchstart', handleTap, false );
 		} else {
 			try {
-				document.body.removeEventListener('mousedown', handleClickBefore, false);
-			} catch (e) {
+				document.body.removeEventListener( 'mousedown', handleClickBefore, false );
+			} catch ( e ) {
 
 			}
 
 			try {
-				document.body.removeEventListener('mousedown', handleClick, false);
-			} catch (e) {
+				document.body.removeEventListener( 'mousedown', handleClick, false );
+			} catch ( e ) {
 
 			}
 
-			document.body.addEventListener('mousedown', handleClick, false);
+			document.body.addEventListener( 'mousedown', handleClick, false );
 		}
-	}, 5);
+	}, 5 );
 
-	if (!canRestart) return false;
+	if ( !canRestart ) return false;
 
-	if ($('#openSideBar').is(':visible')) {
-		$('#openSideBar').fadeOut(150, "linear");
+	if ( $( '#openSideBar' ).is( ':visible' ) ) {
+		$( '#openSideBar' ).fadeOut( 150, "linear" );
 	}
 
-	if (importing == 1) {
-		init(1);
-		checkVisualElements(0);
+	if ( importing == 1 ) {
+		init( 1 );
+		checkVisualElements( 0 );
 	} else {
 		resumeGame();
 	}
 }
 
 function handlePause() {
-	if (gameState == 1 || gameState == 2) {
+	if ( gameState == 1 || gameState == 2 ) {
 		pause();
 	}
 }
 
-function handleTap(e) {
-	handleClickTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+function handleTap( e ) {
+	handleClickTap( e.changedTouches[ 0 ].clientX, e.changedTouches[ 0 ].clientY );
 }
 
-function handleClick(e) {
-	handleClickTap(e.clientX, e.clientY);
+function handleClick( e ) {
+	handleClickTap( e.clientX, e.clientY );
 }
 
-function handleTapBefore(e) {
-	var x = e.changedTouches[0].clientX;
-	var y = e.changedTouches[0].clientY;
+function handleTapBefore( e ) {
+	var x = e.changedTouches[ 0 ].clientX;
+	var y = e.changedTouches[ 0 ].clientY;
 
-	if (x < 120 && y < 83 && $('.helpText').is(':visible')) {
+	if ( x < 120 && y < 83 && $( '.helpText' ).is( ':visible' ) ) {
 		showHelp();
 		return;
 	}
 }
 
-function handleClickBefore(e) {
+function handleClickBefore( e ) {
 	var x = e.clientX;
 	var y = e.clientY;
 
-	if (x < 120 && y < 83 && $('.helpText').is(':visible')) {
+	if ( x < 120 && y < 83 && $( '.helpText' ).is( ':visible' ) ) {
 		showHelp();
 		return;
 	}
@@ -294,19 +284,19 @@ function handleClickBefore(e) {
 
 /* register the service worker */
 
-if ('serviceWorker' in navigator) {
+if ( 'serviceWorker' in navigator ) {
 
-	navigator.serviceWorker.register('/sw.js').then(function (registration) {
-		// Registration was successful
-		
-		console.log('ServiceWorker registration successful with scope: ', registration.scope);
-	
-	}).catch(function (err) {
-		// registration failed :(
-			
-		console.log('ServiceWorker registration failed: ', err);
-	
-	});
-	
+	navigator.serviceWorker.register( '/sw.js' )
+		.then( function ( registration ) {
+			// Registration was successful
+
+			console.log( 'ServiceWorker registration successful with scope: ', registration.scope );
+
+		} ).catch( function ( err ) {
+			// registration failed :(
+
+			console.log( 'ServiceWorker registration failed: ', err );
+
+		} );
+
 }
-

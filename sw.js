@@ -1,4 +1,4 @@
-const preCacheName = "pre-cache-hextris",
+const preCacheName = "pre-cache-hextris-v2",
     preCacheFiles = [
         "/",
         "https://fonts.googleapis.com/css?family=Exo+2",
@@ -38,35 +38,67 @@ const preCacheName = "pre-cache-hextris",
     ];
 
 
-self.addEventListener("install", event => {
+self.addEventListener( "install", event => {
 
-    console.log("installing precache files");
+    console.log( "installing precache files" );
 
-    caches.open(preCacheName).then(function (cache) {
+    caches.open( preCacheName ).then( function ( cache ) {
 
-        return cache.addAll(preCacheFiles);
+        return cache.addAll( preCacheFiles );
 
-    });
+    } );
 
-});
+} );
 
-self.addEventListener("fetch", event => {
+self.addEventListener( "activate", event => {
+
+    event.waitUntil(
+
+        caches.keys().then( cacheNames => {
+
+            cacheNames.forEach( value => {
+
+                if ( value.indexOf( "-v2" ) < 0 ) {
+                    caches.delete( value );
+                }
+
+            } );
+
+            console.log( "service worker activated" );
+
+            return;
+
+        } )
+
+    );
+
+} );
+
+
+self.addEventListener( "fetch", event => {
 
     event.respondWith(
 
-        caches.match(event.request).then(response => {
+        caches.match( event.request ).then( response => {
 
-            if (!response) {
+            if ( !response ) {
 
                 //fall back to the network fetch
-                return fetch(event.request);
+                return fetch( event.request )
+                then( response => {
+
+                    caches.cache( "dynamic" ).cache( response.clone() );
+
+                    return response;
+
+                } );
 
             }
 
             return response;
 
-        })
+        } )
 
-    )
+    );
 
-});
+} );
