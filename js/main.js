@@ -2,7 +2,9 @@ var $startBtn = $( '#startBtn' ),
 	$pauseBtn = $( '#pauseBtn' ),
 	$restartBtn = $( '#restartBtn' ),
 	$pauseBtn = $( '#pauseBtn' ),
-	$helpscreen = $( '#helpScreen' );
+	$helpscreen = $( '#helpScreen' ),
+	$openSideBar = $( '#openSideBar' ),
+	$forkRibbon = $( '#fork-ribbon' );
 
 
 function scaleCanvas() {
@@ -80,7 +82,7 @@ function resumeGame() {
 	startTime = Date.now();
 	setTimeout( function () {
 		if ( ( gameState == 1 || gameState == 2 ) && !$helpscreen.is( ':visible' ) ) {
-			$( '#openSideBar' ).fadeOut( 150, "linear" );
+			$openSideBar.fadeOut( 150, "linear" );
 		}
 	}, 7000 );
 
@@ -88,9 +90,9 @@ function resumeGame() {
 }
 
 function checkVisualElements( arg ) {
-	if ( arg && $( '#openSideBar' ).is( ":visible" ) ) $( '#openSideBar' ).fadeOut( 150, "linear" );
+	if ( arg && $openSideBar.is( ":visible" ) ) $openSideBar.fadeOut( 150, "linear" );
 	if ( !$pauseBtn.is( ':visible' ) ) $pauseBtn.fadeIn( 150, "linear" );
-	$( '#fork-ribbon' ).fadeOut( 150 );
+	$forkRibbon.fadeOut( 150 );
 	if ( !$restartBtn.is( ':visible' ) ) $restartBtn.fadeOut( 150, "linear" );
 	if ( $( '#buttonCont' ).is( ':visible' ) ) $( '#buttonCont' ).fadeOut( 150, "linear" );
 }
@@ -113,18 +115,22 @@ function init( b ) {
 
 		setTimeout( function () {
 			if ( gameState == 1 ) {
-				$( '#openSideBar' ).fadeOut( 150, "linear" );
+				$openSideBar.fadeOut( 150, "linear" );
 			}
 			infobuttonfading = false;
 		}, 7000 );
 		clearSaveState();
 		checkVisualElements( 1 );
 	}
+
+	var $currentHighScore = $( "#currentHighScore" );
+
 	if ( highscores.length === 0 ) {
-		$( "#currentHighScore" ).text( 0 );
+		$currentHighScore.text( 0 );
 	} else {
-		$( "#currentHighScore" ).text( highscores[ 0 ] )
+		$currentHighScore.text( highscores[ 0 ] )
 	}
+
 	infobuttonfading = true;
 	$pauseBtn.attr( 'src', "./images/btn_pause.svg" );
 	hideUIElements();
@@ -141,20 +147,24 @@ function init( b ) {
 	tweetblock = false;
 	scoreOpacity = 0;
 	gameState = 1;
-	$( "#restartBtn" ).hide();
+	$restartBtn.hide();
 	$pauseBtn.show();
+
 	if ( saveState.hex !== undefined ) gameState = 1;
 
 	settings.blockHeight = settings.baseBlockHeight * settings.scale;
 	settings.hexWidth = settings.baseHexWidth * settings.scale;
 	MainHex = saveState.hex || new Hex( settings.hexWidth );
+
 	if ( saveState.hex ) {
 		MainHex.playThrough += 1;
 	}
+
 	MainHex.sideLength = settings.hexWidth;
 
 	var i;
 	var block;
+
 	if ( saveState.blocks ) {
 		saveState.blocks.map( function ( o ) {
 			if ( rgbToHex[ o.color ] ) {
@@ -281,7 +291,7 @@ function animLoop() {
 
 				if ( $pauseBtn.is( ':visible' ) ) $pauseBtn.fadeOut( 150, "linear" );
 				if ( $restartBtn.is( ':visible' ) ) $restartBtn.fadeOut( 150, "linear" );
-				if ( $( '#openSideBar' ).is( ':visible' ) ) $( '.openSideBar' ).fadeOut( 150, "linear" );
+				if ( $openSideBar.is( ':visible' ) ) $( '.openSideBar' ).fadeOut( 150, "linear" );
 
 				canRestart = 0;
 				clearSaveState();
@@ -364,15 +374,15 @@ function checkGameOver() {
 }
 
 function showHelp() {
-	if ( $( '#openSideBar' ).attr( 'src' ) == './images/btn_back.svg' ) {
-		$( '#openSideBar' ).attr( 'src', './images/btn_help.svg' );
-		if ( gameState != 0 && gameState != -1 && gameState != 2 ) {
-			$( '#fork-ribbon' ).fadeOut( 150, 'linear' );
+	if ( $openSideBar.attr( 'src' ) === './images/btn_back.svg' ) {
+		$openSideBar.attr( 'src', './images/btn_help.svg' );
+		if ( gameState != 0 && gameState !== -1 && gameState !== 2 ) {
+			$forkRibbon.fadeOut( 150, 'linear' );
 		}
 	} else {
-		$( '#openSideBar' ).attr( 'src', './images/btn_back.svg' );
-		if ( gameState == 0 && gameState == -1 && gameState == 2 ) {
-			$( '#fork-ribbon' ).fadeIn( 150, 'linear' );
+		$openSideBar.attr( 'src', './images/btn_back.svg' );
+		if ( gameState === 0 && gameState === -1 && gameState === 2 ) {
+			$forkRibbon.fadeIn( 150, 'linear' );
 		}
 	}
 
