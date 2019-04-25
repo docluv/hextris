@@ -1,6 +1,8 @@
 var $startBtn = $( '#startBtn' ),
 	$pauseBtn = $( '#pauseBtn' ),
-	$restartBtn = $( '#restartBtn' );
+	$restartBtn = $( '#restartBtn' ),
+	$pauseBtn = $( '#pauseBtn' ),
+	$helpscreen = $( '#helpScreen' );
 
 
 function scaleCanvas() {
@@ -19,13 +21,15 @@ function scaleCanvas() {
 	};
 
 	if ( window.devicePixelRatio ) {
-		var cw = $( "#canvas" ).attr( 'width' );
-		var ch = $( "#canvas" ).attr( 'height' );
 
-		$( "#canvas" ).attr( 'width', cw * window.devicePixelRatio );
-		$( "#canvas" ).attr( 'height', ch * window.devicePixelRatio );
-		$( "#canvas" ).css( 'width', cw );
-		$( "#canvas" ).css( 'height', ch );
+		var $canvas = $( "#canvas" ),
+			cw = $canvas.attr( 'width' ),
+			ch = $canvas.attr( 'height' );
+
+		$canvas.attr( 'width', cw * window.devicePixelRatio );
+		$canvas.attr( 'height', ch * window.devicePixelRatio );
+		$canvas.css( 'width', cw );
+		$canvas.css( 'height', ch );
 
 		trueCanvas = {
 			width: cw,
@@ -48,14 +52,19 @@ function setBottomContainer() {
 }
 
 function set_score_pos() {
-	$( "#container" ).css( 'margin-top', '0' );
-	var middle_of_container = ( $( "#container" ).height() / 2 + $( "#container" ).offset().top );
-	var top_of_bottom_container = $( "#buttonCont" ).offset().top
-	var igt = $( "#highScoreInGameText" )
-	var igt_bottom = igt.offset().top + igt[ 0 ].offsetHeight
-	var target_midpoint = ( top_of_bottom_container + igt_bottom ) / 2
-	var diff = ( target_midpoint - middle_of_container )
-	$( "#container" ).css( "margin-top", diff + "px" );
+
+	var $container = $( "#container" );
+
+	$container.css( 'margin-top', '0' );
+
+	var middle_of_container = ( $container.height() / 2 + $container.offset().top );
+	var top_of_bottom_container = $( "#buttonCont" ).offset().top;
+	var igt = $( "#highScoreInGameText" );
+	var igt_bottom = igt.offset().top + igt[ 0 ].offsetHeight;
+	var target_midpoint = ( top_of_bottom_container + igt_bottom ) / 2;
+	var diff = ( target_midpoint - middle_of_container );
+
+	$container.css( "margin-top", diff + "px" );
 }
 
 function toggleDevTools() {
@@ -65,12 +74,12 @@ function toggleDevTools() {
 function resumeGame() {
 	gameState = 1;
 	hideUIElements();
-	$( '#pauseBtn' ).show();
-	$( '#restartBtn' ).hide();
+	$pauseBtn.show();
+	$restartBtn.hide();
 	importing = 0;
 	startTime = Date.now();
 	setTimeout( function () {
-		if ( ( gameState == 1 || gameState == 2 ) && !$( '#helpScreen' ).is( ':visible' ) ) {
+		if ( ( gameState == 1 || gameState == 2 ) && !$helpscreen.is( ':visible' ) ) {
 			$( '#openSideBar' ).fadeOut( 150, "linear" );
 		}
 	}, 7000 );
@@ -80,16 +89,16 @@ function resumeGame() {
 
 function checkVisualElements( arg ) {
 	if ( arg && $( '#openSideBar' ).is( ":visible" ) ) $( '#openSideBar' ).fadeOut( 150, "linear" );
-	if ( !$( '#pauseBtn' ).is( ':visible' ) ) $( '#pauseBtn' ).fadeIn( 150, "linear" );
+	if ( !$pauseBtn.is( ':visible' ) ) $pauseBtn.fadeIn( 150, "linear" );
 	$( '#fork-ribbon' ).fadeOut( 150 );
-	if ( !$( '#restartBtn' ).is( ':visible' ) ) $( '#restartBtn' ).fadeOut( 150, "linear" );
+	if ( !$restartBtn.is( ':visible' ) ) $restartBtn.fadeOut( 150, "linear" );
 	if ( $( '#buttonCont' ).is( ':visible' ) ) $( '#buttonCont' ).fadeOut( 150, "linear" );
 }
 
 function hideUIElements() {
-	$( '#pauseBtn' ).hide();
-	$( '#restartBtn' ).hide();
-	$( '#startBtn' ).hide();
+	$pauseBtn.hide();
+	$restartBtn.hide();
+	$startBtn.hide();
 }
 
 function init( b ) {
@@ -97,9 +106,9 @@ function init( b ) {
 		return;
 	}
 	if ( b ) {
-		$( "#pauseBtn" ).attr( 'src', "./images/btn_pause.svg" );
-		if ( $( '#helpScreen' ).is( ":visible" ) ) {
-			$( '#helpScreen' ).fadeOut( 150, "linear" );
+		$pauseBtn.attr( 'src', "./images/btn_pause.svg" );
+		if ( $helpscreen.is( ":visible" ) ) {
+			$helpscreen.fadeOut( 150, "linear" );
 		}
 
 		setTimeout( function () {
@@ -117,7 +126,7 @@ function init( b ) {
 		$( "#currentHighScore" ).text( highscores[ 0 ] )
 	}
 	infobuttonfading = true;
-	$( "#pauseBtn" ).attr( 'src', "./images/btn_pause.svg" );
+	$pauseBtn.attr( 'src', "./images/btn_pause.svg" );
 	hideUIElements();
 	var saveState = localStorage.getItem( "saveState" ) || "{}";
 	saveState = JSONfn.parse( saveState );
@@ -133,7 +142,7 @@ function init( b ) {
 	scoreOpacity = 0;
 	gameState = 1;
 	$( "#restartBtn" ).hide();
-	$( "#pauseBtn" ).show();
+	$pauseBtn.show();
 	if ( saveState.hex !== undefined ) gameState = 1;
 
 	settings.blockHeight = settings.baseBlockHeight * settings.scale;
@@ -266,12 +275,12 @@ function animLoop() {
 					enableRestart();
 				}, 150 );
 
-				if ( $( '#helpScreen' ).is( ':visible' ) ) {
-					$( '#helpScreen' ).fadeOut( 150, "linear" );
+				if ( $helpscreen.is( ':visible' ) ) {
+					$helpscreen.fadeOut( 150, "linear" );
 				}
 
-				if ( $( '#pauseBtn' ).is( ':visible' ) ) $( '#pauseBtn' ).fadeOut( 150, "linear" );
-				if ( $( '#restartBtn' ).is( ':visible' ) ) $( '#restartBtn' ).fadeOut( 150, "linear" );
+				if ( $pauseBtn.is( ':visible' ) ) $pauseBtn.fadeOut( 150, "linear" );
+				if ( $restartBtn.is( ':visible' ) ) $restartBtn.fadeOut( 150, "linear" );
 				if ( $( '#openSideBar' ).is( ':visible' ) ) $( '.openSideBar' ).fadeOut( 150, "linear" );
 
 				canRestart = 0;
@@ -372,10 +381,10 @@ function showHelp() {
 		pause();
 	}
 
-	if ( $( "#pauseBtn" ).attr( 'src' ) == "./images/btn_pause.svg" && gameState != 0 && !infobuttonfading ) {
+	if ( $pauseBtn.attr( 'src' ) == "./images/btn_pause.svg" && gameState != 0 && !infobuttonfading ) {
 		return;
 	}
 
 	$( "#openSideBar" ).fadeIn( 150, "linear" );
-	$( '#helpScreen' ).fadeToggle( 150, "linear" );
+	$helpscreen.fadeToggle( 150, "linear" );
 }
